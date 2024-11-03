@@ -1,0 +1,35 @@
+# Theme
+include ./theme.conf
+
+# Fonts
+font_size 10.0
+font_family JetBrainsMono Nerd Font
+bold_font auto
+italic_font auto
+bold_italic_font auto
+
+# Padding
+window_padding_width 8 
+
+# Tab bar
+tab_bar_style powerline 
+tab_powerline_style round
+tab_title_template "{tab.active_exe} - {tab.active_wd}"
+
+# Cursor
+cursor_shape block
+cursor_blink_interval 0
+cursor_stop_blinking_after 0
+
+# Shell integration
+kitty +kitten ssh
+
+# Scrollback memory
+scrollback_lines 1000
+
+# terminal bell
+enable_audio_bell no
+
+# Opacity
+dynamic_background_opacity yes
+background_opacity 1 
