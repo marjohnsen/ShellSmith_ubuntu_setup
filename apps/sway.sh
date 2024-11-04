@@ -15,6 +15,7 @@ cleanup() {
 install_dependencies() {
   sudo apt update -y
   sudo apt install -y \
+    sway \
     build-essential \
     git \
     wget \
@@ -42,7 +43,29 @@ install_dependencies() {
     python3-pip \
     python3-venv \
     libpciaccess-dev \
-    seatd
+    seatd \
+    libseat-dev \
+    wl-clipboard \
+    clang-tidy \
+    gobject-introspection \
+    libdbusmenu-gtk3-dev \
+    libevdev-dev \
+    libfmt-dev \
+    libgirepository1.0-dev \
+    libgtk-3-dev \
+    libgtkmm-3.0-dev \
+    libinput-dev \
+    libjsoncpp-dev \
+    libmpdclient-dev \
+    libnl-3-dev \
+    libnl-genl-3-dev \
+    libpulse-dev \
+    libsigc++-2.0-dev \
+    libspdlog-dev \
+    libwayland-dev \
+    scdoc \
+    upower \
+    libxkbregistry-dev
 }
 
 cleanup_source_install() {
@@ -96,23 +119,19 @@ build_and_install() {
 
   git -C "$build_path" submodule update --init --recursive || error_exit "$name: Failed to update submodules"
 
-  export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
-  export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
-
   meson setup "$build_path/build" "$build_path" --prefix=/usr/local || error_exit "$name: Setup failed"
   ninja -C "$build_path/build" || error_exit "$name: Build failed"
   sudo ninja -C "$build_path/build" install || error_exit "$name: Install failed"
 }
 
-cleanup_source_install "sway"
-
-install_dependencies
-install_ninja_and_meson
-
-build_and_install "https://gitlab.freedesktop.org/mesa/drm.git"
-build_and_install "https://gitlab.freedesktop.org/wayland/wayland.git"
-build_and_install "https://gitlab.freedesktop.org/wayland/wayland-protocols.git"
-build_and_install "https://gitlab.freedesktop.org/wlroots/wlroots.git" "0.17.1"
-
-build_and_install "git@github.com:wlrfx/scenefx.git" "0.1"
-build_and_install "git@github.com:WillPower3309/swayfx.git" "0.4"
+# install_dependencies
+# install_ninja_and_meson
+#
+# build_and_install "https://gitlab.freedesktop.org/mesa/drm.git"
+# build_and_install "https://gitlab.freedesktop.org/wayland/wayland.git"
+# build_and_install "https://gitlab.freedesktop.org/wayland/wayland-protocols.git"
+#
+# build_and_install "https://gitlab.freedesktop.org/wlroots/wlroots.git" "0.17.1" "-Dseatd=true"
+# build_and_install "git@github.com:wlrfx/scenefx.git" "0.1"
+# build_and_install "git@github.com:WillPower3309/swayfx.git" "0.4"
+build_and_install "https://github.com/Alexays/Waybar.git"
