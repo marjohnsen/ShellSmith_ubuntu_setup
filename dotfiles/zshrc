@@ -33,5 +33,10 @@ eval "$(pyenv virtualenv-init -)"
 export PATH="$PATH:/opt/nvim/"
 
 # Alias
-alias vi="nvim"  
+alias vi="nvim"
+
+# swayfx
+export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+export WLR_BACKENDS=drm
+export WLR_SESSION=seatd
 

@@ -69,7 +69,9 @@ install_dependencies() {
     dmenu \
     swayidle \
     swaybg \
-    swaylock
+    swaylock \
+    grim \
+    imagemagick
 }
 
 cleanup_source_install() {
@@ -128,21 +130,23 @@ build_and_install() {
   sudo ninja -C "$build_path/build" install || error_exit "$name: Install failed"
 }
 
-symlink_configs() {
+setup_swayfx() {
   mkdir -p "$HOME/.config/sway"
-
   safe_symlink "$PWD/dotfiles/sway" "$HOME/.config/sway/config"
-  safe_symlink "$PWD/dotfiles/i3/wallpaper.jpg" "$HOME/.config/sway/wallpaper.jpg"
+  safe_symlink "$PWD/misc/wallpaper.jpg" "$HOME/.config/sway/wallpaper.jpg"
+  safe_symlink "$PWD/misc/lock_screen.sh" "$HOME/.config/sway/lockscreen.sh"
 }
 
 install_dependencies
+
 install_ninja_and_meson
 
 build_and_install "https://gitlab.freedesktop.org/mesa/drm.git"
 build_and_install "https://gitlab.freedesktop.org/wayland/wayland.git"
 build_and_install "https://gitlab.freedesktop.org/wayland/wayland-protocols.git"
-
 build_and_install "https://gitlab.freedesktop.org/wlroots/wlroots.git" "0.17.1" "-Dseatd=true"
 build_and_install "git@github.com:wlrfx/scenefx.git" "0.1"
 build_and_install "git@github.com:WillPower3309/swayfx.git" "0.4"
 build_and_install "https://github.com/Alexays/Waybar.git"
+
+setup_swayfx

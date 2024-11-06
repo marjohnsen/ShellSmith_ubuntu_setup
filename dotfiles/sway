@@ -25,7 +25,7 @@ default_border none
 
 
 # Opacity
-for_window [app_id=".*"] opacity 0.8
+for_window [app_id=".*"] opacity 0.9
 
 # Blur
 blur on
@@ -40,7 +40,7 @@ shadow_blur_radius 20
 shadow_color #0000007F
 
 # Dimming inactive windows
-default_dim_inactive 0.5
+default_dim_inactive 0.3
 dim_inactive_colors.unfocused #000000FF
 dim_inactive_colors.urgent #900000FF
 
@@ -51,7 +51,7 @@ scratchpad_minimize disable
 #   Output Configuration   #
 #--------------------------#
 
-output * bg /usr/local/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+output * bg ~/.config/sway/wallpaper.jpg fill
 
 #--------------------------#
 #     Key Bindings         #
@@ -154,5 +154,9 @@ bar {
     }
 }
 
-include /usr/local/etc/sway/config.d/*
+#--------------------------#
+#       lock-screen        #
+#--------------------------#
+
+bindsym $mod+escape exec ~/.config/sway/lockscreen.sh
 
