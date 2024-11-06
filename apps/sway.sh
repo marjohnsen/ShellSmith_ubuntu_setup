@@ -1,5 +1,5 @@
 #!/bin/bash
-// python
+// zsh python
 
 source utils/app_interface.sh
 
