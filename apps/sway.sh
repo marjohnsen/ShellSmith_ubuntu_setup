@@ -13,65 +13,47 @@ cleanup() {
 }
 
 install_dependencies() {
+  sudo tee /etc/apt/sources.list.d/ubuntu.sources >/dev/null <<EOL
+Types: deb deb-src
+URIs: http://archive.ubuntu.com/ubuntu/
+Suites: noble noble-updates noble-backports
+Components: main restricted universe multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+Types: deb deb-src
+URIs: http://security.ubuntu.com/ubuntu/
+Suites: noble-security
+Components: main restricted universe multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+EOL
+
   sudo apt update -y
+
+  sudo apt build-dep -y meson
+  sudo apt build-dep -y ninja-build
+  sudo apt build-dep -y wayland-protocols
+  sudo apt build-dep -y wlroots
+  sudo apt build-dep -y sway
+
   sudo apt install -y \
-    sway \
     build-essential \
-    git \
+    debhelper \
+    dh-make \
     wget \
-    pkg-config \
-    libegl1-mesa-dev \
-    libgles2-mesa-dev \
-    libvulkan-dev \
-    libdrm-dev \
-    libgbm-dev \
-    libinput-dev \
-    libxkbcommon-dev \
-    libudev-dev \
-    libpixman-1-dev \
-    libpcre2-dev \
-    libjson-c-dev \
-    libpango1.0-dev \
-    libcairo2-dev \
-    libgdk-pixbuf-2.0-dev \
-    wayland-protocols \
-    scdoc \
-    cmake \
-    libffi-dev \
-    libexpat1-dev \
-    libcap-dev \
-    python3-pip \
-    python3-venv \
-    libpciaccess-dev \
-    seatd \
-    libseat-dev \
-    wl-clipboard \
-    clang-tidy \
-    gobject-introspection \
-    libdbusmenu-gtk3-dev \
-    libevdev-dev \
-    libfmt-dev \
-    libgirepository1.0-dev \
-    libgtk-3-dev \
-    libgtkmm-3.0-dev \
-    libinput-dev \
-    libjsoncpp-dev \
-    libmpdclient-dev \
-    libnl-3-dev \
-    libnl-genl-3-dev \
-    libpulse-dev \
-    libsigc++-2.0-dev \
-    libspdlog-dev \
-    libwayland-dev \
-    scdoc \
-    upower \
-    libxkbregistry-dev \
     dmenu \
+    wmenu \
     swayidle \
     swaybg \
     swaylock \
     grim \
-    imagemagick
+    imagemagick \
+    graphviz \
+    xmlto \
+    libgtkmm-3.0-dev \
+    libxkbregistry-dev \
+    libiniparser-dev \
+    clang-tidy \
+    libfftw3-dev
 }
 
 cleanup_source_install() {
@@ -106,47 +88,64 @@ install_ninja_and_meson() {
 }
 
 build_and_install() {
-  local repo_url=$1
-  local git_tag=$2
-  local build_path
-  local name
+  local main_repo_info="$1"
+  shift
+  local build_path name repo_url git_tag
 
-  name=$(basename -s .git "$repo_url" | tr '_' '-')
+  setup_repo() {
+    local url="$1"
+    local tag="$2"
+    local path="$3"
+    git clone --recurse-submodules "$url" "$path" || error_exit "$path: Git clone failed"
+    if [ -n "$tag" ]; then
+      git -C "$path" checkout "$tag" || error_exit "$path: Failed to checkout tag $tag"
+    fi
+    git -C "$path" submodule update --init --recursive || error_exit "$path: Failed to update submodules"
+  }
+
+  main_repo_url=$(echo "$main_repo_info" | awk '{print $1}')
+  main_git_tag=$(echo "$main_repo_info" | awk '{print $2}')
+  name=$(basename -s .git "$main_repo_url" | tr '_' '-')
   build_path=~/build/"$name"
 
   cleanup_source_install "$name"
   prepare_build_dir "$build_path"
+  setup_repo "$main_repo_url" "$main_git_tag" "$build_path"
 
-  git clone --recurse-submodules "$repo_url" "$build_path" || error_exit "$name: Git clone failed"
-
-  if [ -n "$git_tag" ]; then
-    git -C "$build_path" checkout "$git_tag" || error_exit "$name: Failed to checkout tag $git_tag"
-  fi
-
-  git -C "$build_path" submodule update --init --recursive || error_exit "$name: Failed to update submodules"
+  while [ $# -gt 0 ]; do
+    repo_url=$(echo "$1" | awk '{print $1}')
+    git_tag=$(echo "$1" | awk '{print $2}')
+    subproject_path="$build_path/subprojects/$(basename -s .git "$repo_url" | tr '_' '-')"
+    prepare_build_dir "$subproject_path"
+    setup_repo "$repo_url" "$git_tag" "$subproject_path"
+    shift
+  done
 
   meson setup "$build_path/build" "$build_path" --prefix=/usr/local || error_exit "$name: Setup failed"
-  ninja -C "$build_path/build" || error_exit "$name: Build failed"
-  sudo ninja -C "$build_path/build" install || error_exit "$name: Install failed"
+  ninja -C "$build_path/build" -j2 || error_exit "$name: Build failed"
+  sudo ninja -C "$build_path/build" install -j2 || error_exit "$name: Install failed"
 }
 
 setup_swayfx() {
   mkdir -p "$HOME/.config/sway"
-  safe_symlink "$PWD/dotfiles/sway" "$HOME/.config/sway/config"
-  safe_symlink "$PWD/misc/wallpaper.jpg" "$HOME/.config/sway/wallpaper.jpg"
-  safe_symlink "$PWD/misc/lock_screen.sh" "$HOME/.config/sway/lockscreen.sh"
+  safe_symlink "$PWD/dotfiles/sway/sway_config" "$HOME/.config/sway/config"
+  safe_symlink "$PWD/dotfiles/sway/waybar_config" "$HOME/.config/waybar/config"
+  safe_symlink "$PWD/dotfiles/sway/waybar_style.css" "$HOME/.config/waybar/style.css"
+  safe_symlink "$PWD/misc/sway/wallpaper.jpg" "$HOME/.config/sway/wallpaper.jpg"
+  safe_symlink "$PWD/misc/sway/lock_screen.sh" "$HOME/.config/sway/lockscreen.sh"
 }
 
 install_dependencies
-
 install_ninja_and_meson
 
 build_and_install "https://gitlab.freedesktop.org/mesa/drm.git"
 build_and_install "https://gitlab.freedesktop.org/wayland/wayland.git"
 build_and_install "https://gitlab.freedesktop.org/wayland/wayland-protocols.git"
-build_and_install "https://gitlab.freedesktop.org/wlroots/wlroots.git" "0.17.1" "-Dseatd=true"
-build_and_install "git@github.com:wlrfx/scenefx.git" "0.1"
-build_and_install "git@github.com:WillPower3309/swayfx.git" "0.4"
+
+build_and_install "https://github.com/WillPower3309/swayfx.git 0.4" \
+  "https://gitlab.freedesktop.org/wlroots/wlroots.git 0.17.1" \
+  "https://github.com/wlrfx/scenefx.git 0.1"
+
 build_and_install "https://github.com/Alexays/Waybar.git"
 
 setup_swayfx

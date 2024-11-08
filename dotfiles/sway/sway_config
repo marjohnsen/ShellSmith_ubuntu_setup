@@ -47,10 +47,7 @@ dim_inactive_colors.urgent #900000FF
 # Scratchpad settings
 scratchpad_minimize disable
 
-#--------------------------#
-#   Output Configuration   #
-#--------------------------#
-
+# Wallpaper
 output * bg ~/.config/sway/wallpaper.jpg fill
 
 #--------------------------#
@@ -92,7 +89,6 @@ bindsym $mod+8 workspace number 8
 bindsym $mod+9 workspace number 9
 bindsym $mod+0 workspace number 10
 
-# Move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number 1
 bindsym $mod+Shift+2 move container to workspace number 2
 bindsym $mod+Shift+3 move container to workspace number 3
@@ -143,16 +139,16 @@ bindsym $mod+r mode "resize"
 #        Status Bar        #
 #--------------------------#
 
-bar {
-    position top
-    status_command while date +'%Y-%m-%d %X'; do sleep 1; done
-
-    colors {
-        statusline #ffffff
-        background #323232
-        inactive_workspace #32323200 #32323200 #5c5c5c
-    }
-}
+# bar {
+#     position top
+#     status_command while date +'%Y-%m-%d %X'; do sleep 1; done
+#
+#     colors {
+#         statusline #ffffff
+#         background #323232
+#         inactive_workspace #32323200 #32323200 #5c5c5c
+#     }
+# }
 
 #--------------------------#
 #       lock-screen        #

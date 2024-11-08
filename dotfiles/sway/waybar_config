@@ -1,0 +1,39 @@
+{
+  "layer": "top",
+  "position": "left",
+  "reload_style_on_change": true,
+  "margin-top": 10,
+  "margin-bottom": 10,
+  "margin-left": 10,
+  "style": "style.css",
+  
+  "modules-left": [
+    "sway/workspaces"
+  ],
+
+  "modules-right": [
+    "battery"
+  ],
+
+  "sway/workspaces": {
+    "format": "{name}",
+    "on-click": "swaymsg workspace number {name}",
+    "all-outputs": true
+  },
+
+  "battery": {
+    "interval": 1,
+    "states": {
+      "good": 95,
+      "warning": 20,
+      "critical": 10
+    },
+    "format": "{icon}",
+    "format-charging": "{icon}&#8201;&#8201;&#8202;",
+    "format-icons": [
+      "󰂎", "󱊡", "󱊢", "󱊣"
+    ],
+    "tooltip-format": "{capacity}% | {time}"
+  }
+    
+}

@@ -1,5 +1,5 @@
 #!/bin/bash
-//zsh
+// zsh
 
 source utils/app_interface.sh
 

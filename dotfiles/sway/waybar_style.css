@@ -1,0 +1,95 @@
+@define-color bg-dark #282828;
+@define-color bg-darker #3c3836;
+@define-color fg-light #ebdbb2;
+@define-color highlight #d79921;
+@define-color warning #fabd2f;
+@define-color critical #fb4934;
+@define-color success #b8bb26;
+@define-color accent #8ec07c;
+
+* {
+  font-family: "JetBrainsMono Nerd Font,JetBrainsMono NF";
+  text-shadow: none;
+  font-size: 16px;
+  border-radius: 8px;
+  box-shadow: none;
+  border: none;
+}
+
+window#waybar {
+  transition-property: background-color;
+  transition-duration: 0.5s;
+  background: alpha(@bg-dark, 0.92);
+  color: lighter(@highlight);
+}
+
+menu,
+tooltip {
+  border: 1px solid lighter(@highlight);
+  background: alpha(@bg-dark, 0.8);
+  color: lighter(@highlight);
+}
+
+menu label,
+tooltip label {
+  font-size: 14px;
+  color: lighter(@highlight);
+}
+
+#submap,
+#tray>.needs-attention {
+  animation-name: blink-active;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.modules-left {
+  transition-property: background-color;
+  transition-duration: 0.5s;
+  background: alpha(lighter(@bg-darker), .8);
+  color: lighter(@highlight);
+  border-radius: 6px;
+  margin: 4px;
+}
+
+.modules-right {
+  background: alpha(lighter(@bg-darker), .8);
+  color: lighter(@highlight);
+  border-radius: 6px;
+  margin: 4px;
+}
+
+#workspaces {
+  margin: 4px;
+  border-radius: 4px;
+}
+
+#workspaces button {
+  padding: 1px 6px 1px 6px;
+  transition-property: background-color;
+  transition-duration: 0.5s;
+  background: transparent;
+  color: alpha(@fg-light, 0.8);
+  border-radius: 4px;
+}
+
+#workspaces button.urgent {
+  background: alpha(@critical, 0.4);
+  color: lighter(@critical);
+  font-weight: bold;
+}
+
+#workspaces button.focused {
+  background: alpha(@highlight, 0.4);
+  color: lighter(@highlight);
+}
+
+#battery {
+  background: alpha(@highlight, 0.5);
+  color: alpha(@fg-light, 0.8);
+  margin: 4px;
+  border-radius: 4px;
+}
+
