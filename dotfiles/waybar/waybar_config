@@ -1,0 +1,74 @@
+{
+  "layer": "top",
+  "position": "left",
+  "reload_style_on_change": true,
+  "margin-top": 10,
+  "margin-bottom": 10,
+  "margin-left": 10,
+  "style": "style.css",
+  
+  "modules-left": [
+    "sway/workspaces"
+  ],
+
+  "modules-right": [
+    "clock",
+    "custom/network",
+    "battery"
+  ],
+
+  "sway/workspaces": {
+    "format": "{name}",
+    "on-click": "swaymsg workspace number {name}",
+    "all-outputs": true
+  },
+
+  "battery": {
+    "interval": 1,
+    "states": {
+      "good": 95,
+      "warning": 20,
+      "critical": 10
+    },
+    "format": "{icon}",
+    "format-charging": "&#8202;{icon}&#8202;",
+    "format-icons": [
+      "󰂎", "󱊡", "󱊢", "󱊣"
+    ],
+    "tooltip-format": "{capacity}% | {time}"
+  },
+
+  "clock": {
+    "format": "{:%H\n%M}",
+    "tooltip-format": "<tt><small>{calendar}</small></tt>",
+    "calendar": {
+                "mode"          : "month",
+                "mode-mon-col"  : 3,
+                "weeks-pos"     : "right",
+                "on-scroll"     : 1,
+                "format": {
+                    "months":     "<span color='#fabd2f'><b>{}</b></span>",
+                    "days":       "<span color='#ebdbb2'><b>{}</b></span>",
+                    "weeks":      "<span color='#d79921'><b>W{}</b></span>",
+                    "weekdays":   "<span color='#d79921'><b>{}</b></span>",
+                    "today":      "<span color='#fb4934'><b><u>{}</u></b></span>"
+                  }
+                },
+    "actions": {
+               "on-click-right": "mode",
+               "on-scroll-up": "tz_up",
+               "on-scroll-down": "tz_down",
+               "on-scroll-up": "shift_up",
+               "on-scroll-down": "shift_down"
+    }
+  },
+
+  "custom/network": {
+    "exec": "$HOME/.config/waybar/scripts/network.sh | jq --unbuffered --compact-output",
+    "on-click": "$HOME/.config/rofi/wifi-menu/wifi-menu.sh",
+    "interval": 10,
+    "return-type": "json"
+  }
+
+}
+

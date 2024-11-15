@@ -34,6 +34,8 @@ EOL
   sudo apt build-dep -y wayland-protocols
   sudo apt build-dep -y wlroots
   sudo apt build-dep -y sway
+  sudo apt build-dep -y waybar
+  sudo apt build-dep -y mako-notifier
 
   sudo apt install -y \
     build-essential \
@@ -53,7 +55,20 @@ EOL
     libxkbregistry-dev \
     libiniparser-dev \
     clang-tidy \
-    libfftw3-dev
+    libfftw3-dev \
+    libxcb-util0-dev \
+    libxcb-ewmh-dev \
+    libxcb-xkb-dev \
+    libxkbcommon-x11-dev \
+    libxcb-cursor-dev \
+    libxcb-xinerama0-dev \
+    libxcb-keysyms1-dev \
+    libstartup-notification0-dev \
+    pkg-config \
+    pandoc \
+    cppcheck \
+    ohcount \
+    ifstat
 }
 
 cleanup_source_install() {
@@ -128,11 +143,21 @@ build_and_install() {
 
 setup_swayfx() {
   mkdir -p "$HOME/.config/sway"
+  mkdir -p "$HOME/.config/waybar"
+  mkdir -p "$HOME/.config/rofi"
+  mkdir -p "$HOME/.config/mako"
+
   safe_symlink "$PWD/dotfiles/sway/sway_config" "$HOME/.config/sway/config"
-  safe_symlink "$PWD/dotfiles/sway/waybar_config" "$HOME/.config/waybar/config"
-  safe_symlink "$PWD/dotfiles/sway/waybar_style.css" "$HOME/.config/waybar/style.css"
   safe_symlink "$PWD/misc/sway/wallpaper.jpg" "$HOME/.config/sway/wallpaper.jpg"
   safe_symlink "$PWD/misc/sway/lock_screen.sh" "$HOME/.config/sway/lockscreen.sh"
+
+  safe_symlink "$PWD/dotfiles/waybar/waybar_config" "$HOME/.config/waybar/config"
+  safe_symlink "$PWD/dotfiles/waybar/waybar_style.css" "$HOME/.config/waybar/style.css"
+  safe_symlink "$PWD/misc/waybar" "$HOME/.config/waybar/scripts"
+
+  safe_symlink "$PWD/misc/rofi" "$HOME/.config/rofi"
+
+  safe_symlink "$PWD/dotfiles/mako" "$HOME/.config/mako/config"
 }
 
 install_dependencies
@@ -147,5 +172,8 @@ build_and_install "https://github.com/WillPower3309/swayfx.git 0.4" \
   "https://github.com/wlrfx/scenefx.git 0.1"
 
 build_and_install "https://github.com/Alexays/Waybar.git"
+build_and_install "https://github.com/lbonn/rofi.git"
+
+build_and_install "https://github.com/emersion/mako"
 
 setup_swayfx

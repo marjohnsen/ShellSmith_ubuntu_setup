@@ -11,6 +11,8 @@
   font-family: "JetBrainsMono Nerd Font,JetBrainsMono NF";
   text-shadow: none;
   font-size: 16px;
+  min-width: 20px;
+  min-height: 30px;
   border-radius: 8px;
   box-shadow: none;
   border: none;
@@ -47,27 +49,23 @@ tooltip label {
 
 .modules-left {
   transition-property: background-color;
-  transition-duration: 0.5s;
-  background: alpha(lighter(@bg-darker), .8);
+  transition-duration: 1s;
+  background: alpha(lighter(@highlight), .2);
   color: lighter(@highlight);
   border-radius: 6px;
-  margin: 4px;
+  margin: 3px;
 }
 
 .modules-right {
-  background: alpha(lighter(@bg-darker), .8);
-  color: lighter(@highlight);
-  border-radius: 6px;
-  margin: 4px;
 }
 
 #workspaces {
-  margin: 4px;
+  margin: 0px;
   border-radius: 4px;
 }
 
 #workspaces button {
-  padding: 1px 6px 1px 6px;
+  padding: 3px 8px 3px 8px;
   transition-property: background-color;
   transition-duration: 0.5s;
   background: transparent;
@@ -86,10 +84,23 @@ tooltip label {
   color: lighter(@highlight);
 }
 
-#battery {
-  background: alpha(@highlight, 0.5);
-  color: alpha(@fg-light, 0.8);
-  margin: 4px;
+#custom-network,
+#battery,
+#clock {
+  font-size: 23px;
+  background: alpha(@highlight, 0.4);
+  color: alpha(@fg-light, 1);
+  margin: 3px;
   border-radius: 4px;
 }
 
+#clock {
+  font-size: 12px;
+}
+
+#custom-network:hover,
+#battery:hover,
+#clock:hover {
+  background: alpha(@highlight, 0.8);
+  color: lighter(@highlight);
+}

@@ -1,4 +1,11 @@
 #--------------------------#
+#         execute          #
+#--------------------------#
+exec pkill mako
+exec sleep 1
+exec mako &
+
+#--------------------------#
 #        Variables         #
 #--------------------------#
 
@@ -139,16 +146,7 @@ bindsym $mod+r mode "resize"
 #        Status Bar        #
 #--------------------------#
 
-# bar {
-#     position top
-#     status_command while date +'%Y-%m-%d %X'; do sleep 1; done
-#
-#     colors {
-#         statusline #ffffff
-#         background #323232
-#         inactive_workspace #32323200 #32323200 #5c5c5c
-#     }
-# }
+exec_always pkill waybar; waybar
 
 #--------------------------#
 #       lock-screen        #
