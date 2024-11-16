@@ -6,16 +6,118 @@
   "margin-bottom": 10,
   "margin-left": 10,
   "style": "style.css",
-  
+
+  // ---------- //
+  // - Groups - //
+  // ---------- //
+
   "modules-left": [
     "sway/workspaces"
   ],
 
-  "modules-right": [
-    "clock",
-    "custom/network",
-    "battery"
+  "modules-center": [
+    "cpu",
+    "memory",
+    "disk"
   ],
+
+  "modules-right": [
+   "group/audio",
+    "backlight",
+    "custom/network",
+    "group/power",
+    "clock"
+  ],
+
+  // --------------- //
+  // - Power Group - //
+  // --------------- //
+  "group/power": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 500,
+      "transition-left-to-right": false
+    },
+    "modules": [
+      "battery",
+      "power-profiles-daemon"
+    ]
+  },
+
+  "battery": {
+    "interval": 10,
+    "states": {
+      "good": 95,
+      "warning": 20,
+      "critical": 10
+    },
+    "format": "{icon}",
+    "format-charging": "&#8201;{icon}<span size='small' letter-spacing='-1000'></span>",
+    "format-icons": ["󰂎", "󱊡", "󱊢", "󱊣"],
+    "tooltip-format": "{capacity}% | {time}"
+  },
+
+  "power-profiles-daemon": {
+    "format": "{icon}",
+    "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+    "tooltip": true,
+    "format-icons": {
+      "default": "",
+      "performance": "",
+      "balanced": "&#8201;&#8201;",
+      "power-saver": "&#8201;"
+    }
+  },
+
+// --------------- //
+// - Audio Group - //
+// --------------- //
+  "group/audio": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 500,
+      "transition-left-to-right": false
+    },
+    "modules": [
+      "pulseaudio",
+      "pulseaudio/slider"
+    ]
+  },
+
+  "pulseaudio": {
+    "format-bluetooth": "<span size='large'>󰂰</span>",
+    "format": "{icon}",
+    "format-muted": "󰝟",
+    "format-icons": ["&#8201;", "&#8201;", " "],
+    "scroll-step": 2,
+    "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+    "on-click-right": "swaymsg 'exec pavucontrol; for_window [app_id=\"pavucontrol\"] floating enable, move position center'",
+    "ignored-sinks": ["Easy Effects Sink"]
+  },
+
+  "pulseaudio/slider": {
+    "min": 0,
+    "max": 100,
+    "orientation": "vertical"
+  },
+
+
+
+// ------------------ //
+// - Custom Modules - //
+// ------------------ //
+
+  "custom/network": {
+    "exec": "$HOME/.config/waybar/scripts/network.sh | jq --unbuffered --compact-output",
+    "on-click": "$HOME/.config/rofi/wifi-menu/wifi-menu.sh",
+    "interval": 10,
+    "return-type": "json"
+  },
+
+
+// -------------------- //
+// - Built in Modules - //
+// -------------------- //
 
   "sway/workspaces": {
     "format": "{name}",
@@ -23,51 +125,62 @@
     "all-outputs": true
   },
 
-  "battery": {
-    "interval": 1,
-    "states": {
-      "good": 95,
-      "warning": 20,
-      "critical": 10
-    },
+  "backlight": {
+    "device": "intel_backlight",
     "format": "{icon}",
-    "format-charging": "&#8202;{icon}&#8202;",
-    "format-icons": [
-      "󰂎", "󱊡", "󱊢", "󱊣"
-    ],
-    "tooltip-format": "{capacity}% | {time}"
+    "format-icons": ["", "", "", "", "", "", "", "", "", "", "", "", "", ""],
+    "tooltip": false
   },
 
   "clock": {
-    "format": "{:%H\n%M}",
+    "format": "<span size='x-small'>{:%H\n%M}</span>",
     "tooltip-format": "<tt><small>{calendar}</small></tt>",
     "calendar": {
-                "mode"          : "month",
-                "mode-mon-col"  : 3,
-                "weeks-pos"     : "right",
-                "on-scroll"     : 1,
-                "format": {
-                    "months":     "<span color='#fabd2f'><b>{}</b></span>",
-                    "days":       "<span color='#ebdbb2'><b>{}</b></span>",
-                    "weeks":      "<span color='#d79921'><b>W{}</b></span>",
-                    "weekdays":   "<span color='#d79921'><b>{}</b></span>",
-                    "today":      "<span color='#fb4934'><b><u>{}</u></b></span>"
-                  }
-                },
+      "mode": "month",
+      "mode-mon-col": 3,
+      "weeks-pos": "right",
+      "on-scroll": 1,
+      "format": {
+        "months": "<span color='#fabd2f'><b>{}</b></span>",
+        "days": "<span color='#ebdbb2'><b>{}</b></span>",
+        "weeks": "<span color='#d79921'><b>W{}</b></span>",
+        "weekdays": "<span color='#d79921'><b>{}</b></span>",
+        "today": "<span color='#fb4934'><b><u>{}</u></b></span>"
+      }
+    },
     "actions": {
-               "on-click-right": "mode",
-               "on-scroll-up": "tz_up",
-               "on-scroll-down": "tz_down",
-               "on-scroll-up": "shift_up",
-               "on-scroll-down": "shift_down"
+      "on-click-right": "mode",
+      "on-scroll-up": "tz_up",
+      "on-scroll-down": "tz_down",
+      "on-scroll-up": "shift_up",
+      "on-scroll-down": "shift_down"
     }
   },
 
-  "custom/network": {
-    "exec": "$HOME/.config/waybar/scripts/network.sh | jq --unbuffered --compact-output",
-    "on-click": "$HOME/.config/rofi/wifi-menu/wifi-menu.sh",
-    "interval": 10,
-    "return-type": "json"
+  "cpu": {
+      "interval": 1,
+      "format": "<span size='small'> </span>\n<span size='x-small'>{icon0}{icon1}{icon2}{icon3}</span>",
+      "format-icons": [
+            "<span color='#69ff94'>▁</span>",
+            "<span color='#2aa9ff'>▂</span>",
+            "<span color='#f8f8f2'>▃</span>",
+            "<span color='#f8f8f2'>▄</span>",
+            "<span color='#ffffa5'>▅</span>",
+            "<span color='#ffffa5'>▆</span>",
+            "<span color='#ff9977'>▇</span>",
+            "<span color='#dd532e'>█</span>"
+      ]
+  },
+
+  "memory": {
+      "interval": 1,
+      "format": "<span size='x-small'>&#8201;&#8201;</span>\n<span size='x-small'>{percentage}%</span>",
+  },
+
+  "disk": {
+      "interval": 30,
+      "format": "<span size='small'>&#8201;&#8201;&#8202;󱥎</span>\n<span size='xx-small'>{specific_free:0.0f}GB</span>",
+      "unit": "GB"
   }
 
 }

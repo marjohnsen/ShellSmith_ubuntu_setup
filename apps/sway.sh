@@ -68,7 +68,8 @@ EOL
     pandoc \
     cppcheck \
     ohcount \
-    ifstat
+    pulseaudio \
+    pavucontrol
 }
 
 cleanup_source_install() {

@@ -12,7 +12,7 @@ toggle="󰖪  Disable Wi-Fi"
 [[ "$wifi_status" =~ "disabled" ]] && toggle="󰖩  Enable Wi-Fi"
 
 # Display options in rofi menu and capture selection
-chosen_network=$(echo -e "$toggle\n$wifi_list" | uniq -u | rofi -dmenu -i -selected-row 1 -p "Wi-Fi SSID: " -theme "$script_dir/wifi-menu.rasi")
+chosen_network=$(echo -e "$toggle\n$wifi_list" | uniq -u | rofi -dmenu -i -selected-row 1 -p "Wi-Fi SSID: " -theme "$script_dir/../style.rasi")
 [[ -z "$chosen_network" ]] && exit
 
 # Extract selected SSID (ignores icons like  or )

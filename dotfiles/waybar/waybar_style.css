@@ -1,3 +1,6 @@
+/* ------------ */
+/* -- Colors -- */
+/* ------------ */
 @define-color bg-dark #282828;
 @define-color bg-darker #3c3836;
 @define-color fg-light #ebdbb2;
@@ -6,21 +9,27 @@
 @define-color critical #fb4934;
 @define-color success #b8bb26;
 @define-color accent #8ec07c;
+@define-color blue #076678;
 
+/* -------------------- */
+/* -- Global Styling -- */
+/* -------------------- */
 * {
   font-family: "JetBrainsMono Nerd Font,JetBrainsMono NF";
   text-shadow: none;
   font-size: 16px;
-  min-width: 20px;
+  min-width: 15px;
   min-height: 30px;
   border-radius: 8px;
   box-shadow: none;
   border: none;
 }
 
+/* -------------------- */
+/* -- Windows etc... -- */
+/* -------------------- */
 window#waybar {
-  transition-property: background-color;
-  transition-duration: 0.5s;
+  transition: background-color 0.5s;
   background: alpha(@bg-dark, 0.92);
   color: lighter(@highlight);
 }
@@ -40,16 +49,14 @@ tooltip label {
 
 #submap,
 #tray>.needs-attention {
-  animation-name: blink-active;
-  animation-duration: 1s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
+  animation: blink-active 1s linear infinite alternate;
 }
 
+/* ------------------- */
+/* -- Module groups -- */
+/* ------------------- */
 .modules-left {
-  transition-property: background-color;
-  transition-duration: 1s;
+  transition: background-color 1s;
   background: alpha(lighter(@highlight), .2);
   color: lighter(@highlight);
   border-radius: 6px;
@@ -59,15 +66,62 @@ tooltip label {
 .modules-right {
 }
 
+/* ------------- */
+/* -- Widgets -- */
+/* ------------- */
+#power-profiles-daemon,
+#custom-network,
+#pulseaudio,
+#backlight,
+#battery,
+#clock {
+  background: alpha(@highlight, 0.4);
+  color: alpha(@fg-light, 1);
+  margin: 3px;
+  border-radius: 4px;
+}
+
+#memory,
+#disk,
+#cpu {
+  color: alpha(@fg-light, 0.5);
+  margin: 3px;
+  border-radius: 4px;
+}
+
+#custom-network:hover,
+#backlight:hover,
+#battery:hover,
+#clock:hover {
+  background: alpha(@highlight, 0.8);
+  color: lighter(@highlight);
+}
+
+#pulseaudio.muted,
+#power-profiles-daemon.performance {
+  background: alpha(@critical, 0.6);
+}
+
+#pulseaudio.bluetooth,
+#power-profiles-daemon.balanced {
+  background: alpha(@blue, 0.5);
+}
+
+#power-profiles-daemon.power-saver {
+  background: alpha(@success, 0.8);
+}
+
+/* --------------- */
+/* -- Workspace -- */
+/* --------------- */
 #workspaces {
-  margin: 0px;
+  margin: 0;
   border-radius: 4px;
 }
 
 #workspaces button {
-  padding: 3px 8px 3px 8px;
-  transition-property: background-color;
-  transition-duration: 0.5s;
+  padding: 0 7px;
+  transition: background-color 0.5s;
   background: transparent;
   color: alpha(@fg-light, 0.8);
   border-radius: 4px;
@@ -84,23 +138,25 @@ tooltip label {
   color: lighter(@highlight);
 }
 
-#custom-network,
-#battery,
-#clock {
-  font-size: 23px;
-  background: alpha(@highlight, 0.4);
-  color: alpha(@fg-light, 1);
-  margin: 3px;
-  border-radius: 4px;
+/* ----------------------- */
+/* -- Pulseaudio Slider -- */
+/* ----------------------- */
+#pulseaudio-slider slider {
+  min-height: 0;
+  min-width: 0;
+  background-color: @fg-light;
 }
 
-#clock {
-  font-size: 12px;
+#pulseaudio-slider trough {
+  min-height: 50px;
+  min-width: 10px;
+  border-radius: 5px;
+  background-color: black;
 }
 
-#custom-network:hover,
-#battery:hover,
-#clock:hover {
-  background: alpha(@highlight, 0.8);
-  color: lighter(@highlight);
+#pulseaudio-slider highlight {
+  min-height: 10px;
+  min-width: 10px;
+  border-radius: 5px;
+  background-color: @highlight;
 }

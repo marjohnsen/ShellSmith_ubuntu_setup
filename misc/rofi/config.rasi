@@ -1,0 +1,12 @@
+configuration {
+    show-icons: true;
+    drun-match-fields: "name,generic,exec";
+    drun-display-format: "{icon} {name}";
+    case-sensitive: false;
+    lines: 10;
+    sidebar-mode: true;
+    lazy-filter-limit: 100;
+    scrollbar: true;
+    modi: "drun,run,window,recursivebrowser";
+}
+
