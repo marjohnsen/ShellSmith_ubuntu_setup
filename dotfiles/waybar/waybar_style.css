@@ -1,14 +1,14 @@
 /* ------------ */
 /* -- Colors -- */
 /* ------------ */
-@define-color bg-dark #282828;
-@define-color bg-darker #3c3836;
-@define-color fg-light #ebdbb2;
-@define-color highlight #d79921;
-@define-color warning #fabd2f;
-@define-color critical #fb4934;
-@define-color success #b8bb26;
-@define-color accent #8ec07c;
+@define-color bg-darker #282828;
+@define-color bg-dark #3c3836;
+@define-color fg-light #fbf1c7;
+@define-color highlight #b57614;
+@define-color warning #d79921;
+@define-color critical #9d0006;
+@define-color success #98971a;
+@define-color accent #427b58;
 @define-color blue #076678;
 
 /* -------------------- */
@@ -56,11 +56,8 @@ tooltip label {
 /* -- Module groups -- */
 /* ------------------- */
 .modules-left {
-  transition: background-color 1s;
-  background: alpha(lighter(@highlight), .2);
-  color: lighter(@highlight);
   border-radius: 6px;
-  margin: 3px;
+  margin: 0px;
 }
 
 .modules-right {
@@ -71,11 +68,15 @@ tooltip label {
 /* ------------- */
 #power-profiles-daemon,
 #custom-network,
+#custom-shutdown,
+#custom-reboot,
+#custom-logout,
+#custom-lock,
 #pulseaudio,
 #backlight,
 #battery,
 #clock {
-  background: alpha(@highlight, 0.4);
+  background: alpha(@highlight, 0.6);
   color: alpha(@fg-light, 1);
   margin: 3px;
   border-radius: 4px;
@@ -89,41 +90,52 @@ tooltip label {
   border-radius: 4px;
 }
 
+#power-profiles-daemon:hover,
 #custom-network:hover,
+#custom-shutdown:hover,
+#custom-reboot:hover,
+#custom-logout:hover,
+#custom-lock:hover,
+#pulseaudio:hover,
 #backlight:hover,
 #battery:hover,
 #clock:hover {
-  background: alpha(@highlight, 0.8);
-  color: lighter(@highlight);
+  box-shadow: 2px 2px @bg-darker;
+  margin: 1px 3px 3px 1px;
+  color: darker(@fg-light);
 }
 
+#custom-shutdown,
 #pulseaudio.muted,
 #power-profiles-daemon.performance {
-  background: alpha(@critical, 0.6);
+  background: alpha(@critical, 0.8);
 }
 
+#custom-reboot,
 #pulseaudio.bluetooth,
 #power-profiles-daemon.balanced {
-  background: alpha(@blue, 0.5);
+  background: alpha(@blue, 0.6);
 }
 
+#custom-logout,
 #power-profiles-daemon.power-saver {
-  background: alpha(@success, 0.8);
+  background: alpha(@success, 0.9);
 }
 
 /* --------------- */
 /* -- Workspace -- */
 /* --------------- */
 #workspaces {
-  margin: 0;
+  background: alpha(lighter(@highlight), .3);
+  color: lighter(@highlight);
+  margin: 3px;
   border-radius: 4px;
 }
 
 #workspaces button {
   padding: 0 7px;
-  transition: background-color 0.5s;
   background: transparent;
-  color: alpha(@fg-light, 0.8);
+  color: alpha(@fg-light, 0.9);
   border-radius: 4px;
 }
 

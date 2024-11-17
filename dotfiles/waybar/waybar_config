@@ -26,7 +26,8 @@
     "backlight",
     "custom/network",
     "group/power",
-    "clock"
+    "clock",
+    "group/system"
   ],
 
   // --------------- //
@@ -101,6 +102,48 @@
     "orientation": "vertical"
   },
 
+
+// --------------- //
+// - System Group - //
+// --------------- //
+
+  "group/system": {
+      "orientation": "inherit",
+      "drawer": {
+          "transition-duration": 500,
+          "transition-left-to-right": false
+      },
+      "modules": [
+          "custom/lock",
+          "custom/logout",
+          "custom/reboot",
+          "custom/shutdown"
+      ]
+  },
+
+  "custom/shutdown": {
+      "format": "<span size='large'>󰐥</span>",
+      "tooltip-format": "Shut down the computer",
+      "on-click": "GTK_THEME=Adwaita:dark zenity --question --text='Are you sure you want to shut down?' && swaymsg exec sudo shutdown now"
+  },
+
+  "custom/reboot": {
+      "format": "",
+      "tooltip-format": "Reboot the computer",
+      "on-click": "GTK_THEME=Adwaita:dark zenity --question --text='Are you sure you want to reboot?' && swaymsg exec sudo reboot"
+  },
+
+  "custom/logout": {
+      "format": "<span size='large'>󰗽</span>",
+      "tooltip-format": "Logout of the session",
+      "on-click": "GTK_THEME=Adwaita:dark zenity --question --text='Are you sure you want to log out?' && swaymsg exit"
+  },
+
+  "custom/lock": {
+      "format": "<span size='medium'></span>",
+      "tooltip-format": "Lock screen",
+      "on-click": "$HOME/.config/sway/lockscreen.sh"
+  },
 
 
 // ------------------ //
