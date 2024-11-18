@@ -56,8 +56,6 @@ tooltip label {
 /* -- Module groups -- */
 /* ------------------- */
 .modules-left {
-  border-radius: 6px;
-  margin: 0px;
 }
 
 .modules-right {
@@ -78,16 +76,18 @@ tooltip label {
 #clock {
   background: alpha(@highlight, 0.6);
   color: alpha(@fg-light, 1);
-  margin: 3px;
+  margin: 0px 3px 3px 3px;
   border-radius: 4px;
 }
 
-#memory,
-#disk,
 #cpu {
-  color: alpha(@fg-light, 0.5);
-  margin: 3px;
-  border-radius: 4px;
+  margin: -8px;
+  font-size: 15px;
+}
+
+#memory {
+  margin: -7px;
+  font-size: 18px;
 }
 
 #power-profiles-daemon:hover,
@@ -101,7 +101,7 @@ tooltip label {
 #battery:hover,
 #clock:hover {
   box-shadow: 2px 2px @bg-darker;
-  margin: 1px 3px 3px 1px;
+  margin: -1px 3px 3px 1px;
   color: darker(@fg-light);
 }
 
@@ -128,7 +128,7 @@ tooltip label {
 #workspaces {
   background: alpha(lighter(@highlight), .3);
   color: lighter(@highlight);
-  margin: 3px;
+  margin: 3px 3px -9px 3px;
   border-radius: 4px;
 }
 

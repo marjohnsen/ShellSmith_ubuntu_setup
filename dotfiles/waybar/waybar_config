@@ -1,3 +1,4 @@
+    
 {
   "layer": "top",
   "position": "left",
@@ -12,17 +13,14 @@
   // ---------- //
 
   "modules-left": [
-    "sway/workspaces"
-  ],
-
-  "modules-center": [
-    "cpu",
-    "memory",
-    "disk"
+    "sway/workspaces",
+    "memory"
   ],
 
   "modules-right": [
-   "group/audio",
+    "cpu",
+    "custom/gradient",
+    "group/audio",
     "backlight",
     "custom/network",
     "group/power",
@@ -202,29 +200,35 @@
 
   "cpu": {
       "interval": 1,
-      "format": "<span size='small'> </span>\n<span size='x-small'>{icon0}{icon1}{icon2}{icon3}</span>",
+      "format": "<span size='x-small'>{icon0}{icon1}{icon2}{icon3}</span>",
       "format-icons": [
-            "<span color='#69ff94'>▁</span>",
-            "<span color='#2aa9ff'>▂</span>",
-            "<span color='#f8f8f2'>▃</span>",
-            "<span color='#f8f8f2'>▄</span>",
-            "<span color='#ffffa5'>▅</span>",
-            "<span color='#ffffa5'>▆</span>",
-            "<span color='#ff9977'>▇</span>",
-            "<span color='#dd532e'>█</span>"
+          "<span color='#282828'> </span>",
+          "<span color='#d79921'>▁</span>",
+          "<span color='#e1a72b'>▂</span>",
+          "<span color='#f08f36'>▃</span>",
+          "<span color='#f78a4e'>▄</span>",
+          "<span color='#fb684a'>▅</span>",
+          "<span color='#fb4934'>▆</span>",
+          "<span color='#d63520'>▇</span>",
+          "<span color='#9d0006'>█</span>"
       ]
   },
 
   "memory": {
       "interval": 1,
-      "format": "<span size='x-small'>&#8201;&#8201;</span>\n<span size='x-small'>{percentage}%</span>",
+      "format": "<span size='small'>{icon}</span>",
+      "format-icons": [
+          "<span color='#282828'></span>",
+          "<span color='#d79921'>▁▁▁</span>",
+          "<span color='#e1a72b'>▁▁▁</span>",
+          "<span color='#f08f36'>▁▁▁</span>",
+          "<span color='#f78a4e'>▁▁▁</span>",
+          "<span color='#fb684a'>▁▁▁</span>",
+          "<span color='#fb4934'>▁▁▁</span>",
+          "<span color='#d63520'>▁▁▁</span>",
+          "<span color='#9d0006'>▁▁▁</span>"
+      ]
   },
-
-  "disk": {
-      "interval": 30,
-      "format": "<span size='small'>&#8201;&#8201;&#8202;󱥎</span>\n<span size='xx-small'>{specific_free:0.0f}GB</span>",
-      "unit": "GB"
-  }
 
 }
 
