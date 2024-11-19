@@ -10,7 +10,11 @@ install_dependencies() {
   sudo install lazygit /usr/local/bin
   rm -rf lazygit lazygit.tar.gz
 
-  sudo apt install ripgrep fd-find texlive biber latexmk fuse -y
+  sudo apt install -y ripgrep fd-find texlive biber latexmk \
+    fuse imagemagick tmux curl lua5.1 luarocks
+
+  luarocks --lua-version=5.1 install magick --local
+
   sudo npm install -g neovim
 }
 
@@ -49,8 +53,10 @@ setup_nvim_pyenv() {
   pyenv virtualenv "$latest_stable" neovim
 
   "$(pyenv prefix neovim)/bin/python" -m pip install --upgrade pip
-  "$(pyenv prefix neovim)/bin/python" -m pip install pynvim
-
+  "$(pyenv prefix neovim)/bin/python" -m \
+    pip install pynvim cairosvg pnglatex plotly kaleido \
+    pyperclip nbformat pillow requests websocket-client \
+    jupyter_client jupytext ipykernel
 }
 
 install_dependencies

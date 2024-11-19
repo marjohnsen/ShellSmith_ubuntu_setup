@@ -125,17 +125,17 @@ setup_swayfx() {
 install_dependencies
 install_ninja_and_meson
 
-mason_build_and_ninja_install "https://gitlab.freedesktop.org/mesa/drm.git"
-mason_build_and_ninja_install "https://gitlab.freedesktop.org/wayland/wayland.git"
-mason_build_and_ninja_install "https://gitlab.freedesktop.org/wayland/wayland-protocols.git"
+meson_build_and_ninja_install "https://gitlab.freedesktop.org/mesa/drm.git"
+meson_build_and_ninja_install "https://gitlab.freedesktop.org/wayland/wayland.git"
+meson_build_and_ninja_install "https://gitlab.freedesktop.org/wayland/wayland-protocols.git"
 
-mason_build_and_ninja_install "https://github.com/WillPower3309/swayfx.git 0.4" \
+meson_build_and_ninja_install "https://github.com/WillPower3309/swayfx.git 0.4" \
   "https://gitlab.freedesktop.org/wlroots/wlroots.git 0.17.1" \
   "https://github.com/wlrfx/scenefx.git 0.1"
 
-mason_build_and_ninja_install "https://github.com/Alexays/Waybar.git"
-mason_build_and_ninja_install "https://github.com/lbonn/rofi.git"
+meson_build_and_ninja_install "https://github.com/Alexays/Waybar.git"
+meson_build_and_ninja_install "https://github.com/lbonn/rofi.git"
 
-mason_build_and_ninja_install "https://github.com/emersion/mako"
+meson_build_and_ninja_install "https://github.com/emersion/mako"
 
 setup_swayfx
