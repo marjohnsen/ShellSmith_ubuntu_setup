@@ -1,4 +1,4 @@
--- bootstrap lazy.nvim, LazyVim and your plugins
-vim.g.python3_host_prog = vim.fn.system("pyenv prefix neovim") .. "/bin/python"
+local pyenv_prefix = vim.fn.system("pyenv prefix neovim"):gsub("\n", "")
+vim.g.python3_host_prog = pyenv_prefix .. "/bin/python"
 
 require("config.lazy")

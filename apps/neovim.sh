@@ -56,7 +56,7 @@ setup_nvim_pyenv() {
   "$(pyenv prefix neovim)/bin/python" -m \
     pip install pynvim cairosvg pnglatex plotly kaleido \
     pyperclip nbformat pillow requests websocket-client \
-    jupyter_client jupytext ipykernel
+    jupyter_client jupytext ipykernel notebook
 }
 
 install_dependencies

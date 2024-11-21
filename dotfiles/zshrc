@@ -32,11 +32,20 @@ eval "$(pyenv virtualenv-init -)"
 # Nvim
 export PATH="$PATH:/opt/nvim/"
 
-# Alias
-alias vi="nvim"
-
 # swayfx
 export XDG_RUNTIME_DIR="/run/user/$(id -u)"
 export WLR_BACKENDS=drm
 export WLR_SESSION=seatd
 
+# neovim
+function nvimvenv {
+  if [[ -e "$VIRTUAL_ENV" && -f "$VIRTUAL_ENV/bin/activate" ]]; then
+    source "$VIRTUAL_ENV/bin/activate"
+    command nvim "$@"
+    deactivate
+  else
+    command nvim "$@"
+  fi
+}
+alias nvim=nvimvenv
+alias vi=nvim
