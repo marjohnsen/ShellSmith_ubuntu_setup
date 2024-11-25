@@ -13,6 +13,8 @@ install_dependencies() {
   sudo apt install -y ripgrep fd-find texlive biber latexmk \
     fuse imagemagick tmux curl lua5.1 luarocks
 
+  pipx install jupytext
+
   luarocks --lua-version=5.1 install magick --local
 
   sudo npm install -g neovim

@@ -2,7 +2,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, { "python" })
+      vim.list_extend(opts.ensure_installed, { "norg" })
 
       opts.textobjects = opts.textobjects or {}
       opts.textobjects.move = opts.textobjects.move or {}
