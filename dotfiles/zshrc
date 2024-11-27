@@ -49,3 +49,6 @@ function nvimvenv {
 }
 alias nvim=nvimvenv
 alias vi=nvim
+
+# batcat
+export MANROFFOPT="-c"

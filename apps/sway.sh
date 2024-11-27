@@ -110,8 +110,7 @@ setup_swayfx() {
   mkdir -p "$HOME/.config/mako"
 
   safe_symlink "$PWD/dotfiles/sway/sway_config" "$HOME/.config/sway/config"
-  safe_symlink "$PWD/misc/sway/wallpaper.jpg" "$HOME/.config/sway/wallpaper.jpg"
-  safe_symlink "$PWD/misc/sway/lock_screen.sh" "$HOME/.config/sway/lockscreen.sh"
+  safe_symlink "$PWD/misc/sway" "$HOME/.config/sway/scripts"
 
   safe_symlink "$PWD/dotfiles/waybar/waybar_config" "$HOME/.config/waybar/config"
   safe_symlink "$PWD/dotfiles/waybar/waybar_style.css" "$HOME/.config/waybar/style.css"

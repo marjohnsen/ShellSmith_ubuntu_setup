@@ -1,8 +1,8 @@
 #--------------------------#
 #         execute          #
 #--------------------------#
+
 exec pkill mako
-exec sleep 1
 exec mako &
 
 #--------------------------#
@@ -30,7 +30,6 @@ gaps inner 10
 # Border
 default_border none
 
-
 # Opacity
 for_window [app_id=".*"] opacity 0.9
 
@@ -55,7 +54,7 @@ dim_inactive_colors.urgent #900000FF
 scratchpad_minimize disable
 
 # Wallpaper
-output * bg ~/.config/sway/wallpaper.jpg fill
+output * bg ~/.config/sway/scripts/wallpaper.jpg fill
 
 #--------------------------#
 #     Key Bindings         #
@@ -68,6 +67,7 @@ bindsym $mod+d exec $menu
 floating_modifier $mod normal
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+e exec swaynag -t warning -m 'Exit Sway?' -B 'Yes' 'swaymsg exit'
+bindsym $mod+Shift+m exec sh $HOME/.config/sway/scripts/switch.sh
 
 # Focus movement
 bindsym $mod+$left focus left
@@ -143,14 +143,15 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 #--------------------------#
-#        Status Bar        #
+#          waybar          #
 #--------------------------#
 
-exec_always pkill waybar; waybar
+exec $HOME/.config/sway/scripts/switch.sh 0
+include $HOME/.config/sway/bar
 
 #--------------------------#
 #       lock-screen        #
 #--------------------------#
 
-bindsym $mod+escape exec ~/.config/sway/lockscreen.sh
+bindsym $mod+escape exec ~/.config/sway/scripts/lockscreen.sh
 

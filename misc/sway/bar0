@@ -1,0 +1,23 @@
+bar {
+    position bottom 
+
+    font "JetBrainsMono Nerd Font 10"
+
+    status_command while ~/.config/sway/scripts/swaybar_input.sh; do sleep 1; done
+
+    bindsym button1 exec --no-startup-id ~/.config/rofi/wifi-menu/wifi-menu.sh
+    bindsym button3 exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
+    bindsym button4 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
+    bindsym button5 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
+
+    colors {
+        background #010101
+        statusline #fbf1c7
+        separator #076678
+
+        focused_workspace #fbf1c7 #07667890 #fbf1c7
+        active_workspace  #fbf1c7 #504945 #fbf1c7
+        inactive_workspace #000000 #504945 #000000
+        urgent_workspace #fbf1c7 #cc241d #fbf1c7
+    }
+}

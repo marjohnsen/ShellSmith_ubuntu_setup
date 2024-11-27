@@ -4,7 +4,7 @@ source utils/app_interface.sh
 
 apt_install() {
   sudo apt update && sudo apt upgrade
-  sudo apt install curl git nodejs npm pipx wl-clipboard
+  sudo apt install curl git nodejs npm pipx wl-clipboard bat
 }
 
 install_fonts() {
