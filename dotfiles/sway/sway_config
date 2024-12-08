@@ -60,6 +60,7 @@ output * bg ~/.config/sway/scripts/wallpaper.jpg fill
 #     Key Bindings         #
 #--------------------------#
 
+
 # Basics
 bindsym $mod+Return exec $term
 bindsym $mod+Shift+q kill
@@ -117,16 +118,16 @@ bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 bindsym $mod+f fullscreen
-bindsym $mod+Shift+space floating toggle
-bindsym $mod+space focus mode_toggle
+bindsym $mod+tab focus mode_toggle
 bindsym $mod+a focus parent
 
 #--------------------------#
 #       Scratchpad         #
 #--------------------------#
 
-bindsym $mod+Shift+minus move scratchpad
-bindsym $mod+minus scratchpad show
+bindsym $mod+equal move scratchpad
+bindsym $mod+minus floating toggle
+bindsym $mod+space scratchpad show
 
 #--------------------------#
 #      Resize Mode         #
@@ -153,5 +154,5 @@ include $HOME/.config/sway/bar
 #       lock-screen        #
 #--------------------------#
 
-bindsym $mod+escape exec ~/.config/sway/scripts/lockscreen.sh
+bindsym $mod+escape exec ~/.config/sway/scripts/lock_screen.sh
 
