@@ -2,19 +2,29 @@
 
 ROFI_THEME="$(dirname "$0")/../style.rasi"
 
+create_temp_theme() {
+  local semantic="$1"
+  local color="$2"
+  local temp_file
+  temp_file=$(mktemp /tmp/rofi_theme.XXXXXX.rasi)
+  sed "s/ *$semantic:[^;]*;/    $semantic:    $color;/" "$ROFI_THEME" >"$temp_file"
+  echo "$temp_file"
+}
+
 dotdotdot() {
-  local dots=(". " ".. " "... ")
+  local dots=("   " ".  " ".. " "...")
   local i=0
   while :; do
-    notify-send -t 1005 "Scanning for wireless networks${dots[i]}"
+    notify-send -t 1000 "Scanning for wireless networks${dots[i]}"
     sleep 1
-    i=$(((i + 1) % 3))
+    i=$(((i + 1) % 4))
   done
 }
 
 get_wifi_list() {
+  local rescan="$1"
   local wifi_list
-  wifi_list=$(nmcli --fields "SECURITY,SSID,BARS,FREQ,IN-USE" device wifi list --rescan yes 2>/dev/null)
+  wifi_list=$(nmcli --fields "SECURITY,SSID,BARS,FREQ,CHAN,IN-USE" device wifi list --rescan "${rescan}" 2>/dev/null)
 
   if [[ $? -ne 0 || -z "$wifi_list" ]]; then
     notify-send "Error" "Failed to fetch Wi-Fi list. Ensure Wi-Fi is enabled and try again."
@@ -31,35 +41,50 @@ get_wifi_list() {
       security=$1;
       ssid=$2;
       bars=$3;
-      freq = ($4 ~ /^2/) ? "2.4 GHz" : (($4 ~ /^5/) ? "5.0 GHz" : "NA");
-      in_use=$5;
+      freq = ($4 ~ /^2/) ? "2.4" : (($4 ~ /^5/) ? "5.0" : "NA");
+      chan = $5;
+      freq_chan = freq "#" chan; 
+      in_use=$6;
 
-      if (in_use ~ /\*/) icon="";
-      else if (ssid in saved_networks) icon="󰓎";
-      else if (security ~ /WPA|WEP/) icon="";
-      else icon="";
+      if (in_use ~ /\*/) {
+          icon="";
+          priority=NR;
+      } else if (ssid in saved_networks) {
+          icon="󰓎";
+          priority=NR + 10000;
+      } else {
+          icon="";
+          priority=NR + 100000;
+      }
 
-      printf "%-5s %-30s %10s %10s\n", icon, ssid, freq, bars;
+      printf "%d|%-1s|%-20s|%-7s|%4s\n", priority, icon, ssid, freq_chan, bars;
+  }
+  ' | sort -t"|" -k1,1n | awk -F"|" '
+  {
+      printf "%-1s %-20s %-7s %4s\n", $2, $3, $4, $5;
   }'
 }
 
 show_menu() {
-  local options="$1"
-  echo -e "$options" | rofi -dmenu -i -selected-row 1 -p "Wi-Fi SSID: " -theme "$ROFI_THEME"
+  local theme="$1"
+  local options="$2"
+  echo -e "$options" | rofi -dmenu -i -selected-row 1 -p "Wi-Fi SSID: " -theme "$theme"
 }
 
 extract_ssid() {
   echo "$1" | sed -E 's/^.{3}//;s/  \(.*$//'
 }
 
+extract_saved_networks() {
+  nmcli --fields NAME,TYPE connection show | grep wifi | awk '{ $NF=""; print $0 }'
+}
+
 toggle_wifi() {
   local action="$1"
   if [[ "$action" == "󰨙 Enable Wi-Fi" ]]; then
-    nmcli radio wifi on
-    notify-send "Wi-Fi Enabled"
+    nmcli radio wifi on && notify-send "Wi-Fi Enabled"
   elif [[ "$action" == "󰔡 Disable Wi-Fi" ]]; then
-    nmcli radio wifi off
-    notify-send "Wi-Fi Disabled"
+    nmcli radio wifi off && notify-send "Wi-Fi Disabled"
   fi
 }
 
@@ -74,7 +99,7 @@ disconnect_saved_network() {
   local ssid="$1"
   nmcli connection down id "$ssid" &&
     notify-send "Disconnected from \"$ssid\"" ||
-    notify-send "Failed to connect to dosconnect network: \"$ssid\""
+    notify-send "Failed to disconnect network: \"$ssid\""
 }
 
 connect_to_new_network() {
@@ -95,32 +120,69 @@ connect_to_new_network() {
   fi
 }
 
+show_confirm_menu() {
+  local message="$1"
+  local confirmation_options="Yes\nNo"
+  echo -e "$confirmation_options" | rofi -dmenu -i -selected-row 1 -p "$message" -theme "$RED_ROFI_THEME"
+}
+
+delete_saved_network() {
+  local saved_networks
+  local delete_selected
+  local confirmation
+
+  saved_networks=$(extract_saved_networks)
+  delete_selected=$(show_menu "$RED_ROFI_THEME" "$saved_networks")
+
+  if [[ -n "$delete_selected" ]]; then
+    confirmation=$(show_confirm_menu "Confirm delete \"$delete_selected\"?")
+
+    if [[ "$confirmation" == "Yes" ]]; then
+      nmcli connection delete id "$delete_selected" &&
+        notify-send "Deleted network \"$delete_selected\"" ||
+        notify-send "Failed to delete network \"$delete_selected\""
+    else
+      notify-send "Deletion cancelled"
+    fi
+  else
+    notify-send "No network selected for deletion"
+  fi
+}
+
 main() {
+  local rescan=$1
+
+  RED_ROFI_THEME=$(create_temp_theme "accent" "#FF000040")
+  GRAY_ROFI_THEME=$(create_temp_theme "accent" "#CCBBAA40")
+
   dotdotdot &
   spinner_pid=$!
 
   WIFI_STATUS=$(nmcli -fields WIFI g)
-  WIFI_LIST=$(get_wifi_list)
+  WIFI_LIST=$(get_wifi_list "${rescan}")
 
   kill "$spinner_pid" 2>/dev/null
 
-  WIFI_TOGGLE=$([[ "$WIFI_STATUS" =~ "disabled" ]] && echo "󰨙  Enable Wi-Fi" || echo "󰔡  Disable Wi-Fi")
-  SELECTED=$(show_menu "$WIFI_TOGGLE\n$WIFI_LIST")
+  WIFI_TOGGLE=$([[ "$WIFI_STATUS" =~ "disabled" ]] && echo "󰨙 Enable Wi-Fi" || echo "󰔡 Disable Wi-Fi")
+  DELETE_OPTION="󰚃 Delete Existing Network"
+
+  if [[ "$WIFI_STATUS" =~ "enabled" ]]; then
+    SELECTED=$(show_menu "$ROFI_THEME" "$WIFI_TOGGLE\n$DELETE_OPTION\n$WIFI_LIST")
+  else
+    SELECTED=$(show_menu "$GRAY_ROFI_THEME" "$WIFI_TOGGLE\n$DELETE_OPTION\n$WIFI_LIST")
+  fi
+
   SSID=$(extract_ssid "$SELECTED")
 
-  if [[ -z "$SELECTED" ]]; then
-    notify-send "None selected" && exit 1
-  elif [[ "$SELECTED" =~ 󰓎 ]]; then
-    connect_to_saved_network "$SSID"
-  elif [[ "$SELECTED" =~  ]]; then
-    disconnect_saved_network "$SSID"
-  elif [[ "$SELECTED" =~  ]] || [[ "$SELECTED" =~  ]]; then
-    connect_to_new_network "$SSID" "$SELECTED"
-  elif [[ "$SELECTED" =~ 󰔡 ]] || [[ "$SELECTED" =~ 󰨙 ]]; then
-    toggle_wifi "$SELECTED"
-  else
-    notify-send "Error: state of ${SELECTED} is not known" && exit 1
-  fi
+  case "$SELECTED" in
+  "") exit 1 ;;
+  *󰓎*) connect_to_saved_network "$SSID" ;;
+  **) disconnect_saved_network "$SSID" && main "yes" ;;
+  *󰚃*) delete_saved_network && main "no" ;;
+  ** | **) connect_to_new_network "$SSID" "$SELECTED" ;;
+  *󰔡* | *󰨙*) toggle_wifi "$SELECTED" && main "yes" ;;
+  *) notify-send "Error: state of ${SELECTED} is not known" && main "yes" ;;
+  esac
 }
 
-main "$@"
+main "$1"

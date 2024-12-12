@@ -2,10 +2,12 @@
     bg0:    #282828EE;
     bg1:    #3c3836EE;
     fg0:    #ebdbb2EE;
+
     fg1:    #bdae93EE;
+
     accent: #d7992140;
 
-    font:   "Roboto 12";
+    font:   "JetbrainsMono Nerd Font 12";
     background-color: transparent;
     text-color: @fg0;
     margin: 0px;
@@ -85,4 +87,3 @@ element-icon {
 element-text {
     text-color: inherit;
 }
-
