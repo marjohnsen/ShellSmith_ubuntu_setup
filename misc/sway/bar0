@@ -5,7 +5,7 @@ bar {
 
     status_command while ~/.config/sway/scripts/swaybar_input.sh; do sleep 1; done
 
-    bindsym button1 exec --no-startup-id ~/.config/rofi/wifi-menu/wifi-menu.sh
+    bindsym button1 exec --no-startup-id ~/.config/rofi/wifi-menu/wifi-menu.sh yes
     bindsym button3 exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
     bindsym button4 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
     bindsym button5 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%

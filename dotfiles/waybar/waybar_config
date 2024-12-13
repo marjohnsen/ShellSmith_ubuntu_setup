@@ -150,7 +150,7 @@
 
   "custom/network": {
     "exec": "$HOME/.config/waybar/scripts/network.sh | jq --unbuffered --compact-output",
-    "on-click": "$HOME/.config/rofi/wifi-menu/wifi-menu.sh",
+    "on-click": "$HOME/.config/rofi/wifi-menu/wifi-menu.sh yes",
     "interval": 10,
     "return-type": "json"
   },
