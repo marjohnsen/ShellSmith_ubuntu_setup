@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source utils/app_interface.sh
+source ../utils/app_interface.sh
 
 install_and_setup_zsh() {
   sudo apt install zsh -y

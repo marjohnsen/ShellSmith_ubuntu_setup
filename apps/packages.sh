@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source utils/app_interface.sh
+source ../utils/app_interface.sh
 
 apt_install() {
   sudo apt update && sudo apt upgrade
