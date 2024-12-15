@@ -1,7 +1,7 @@
 #!/bin/bash
 // zsh
 
-source utils/app_interface.sh
+source ../utils/app_interface.sh
 
 install_build_dependencies() {
   sudo apt update

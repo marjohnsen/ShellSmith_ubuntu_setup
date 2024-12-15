@@ -1,7 +1,7 @@
 #!/bin/bash
 // zsh python
 
-source utils/app_interface.sh
+source ../utils/app_interface.sh
 
 error_exit() {
   echo "$1" >&2

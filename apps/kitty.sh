@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source utils/app_interface.sh
+source ../utils/app_interface.sh
 
 install_kitty() {
   sudo apt install kitty -y
